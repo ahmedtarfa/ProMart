@@ -1,0 +1,23 @@
+{
+    "name": "superstore",
+    "author": "Teams2",
+    "category": "Website",
+    "version": "17.0.0.1.0",
+    "depends": ["base",
+    "contacts",
+    "sale_management",
+    "stock",],  
+    "data": [
+        "security/ir.model.access.csv",
+        "views/sales_forcasting_view.xml",
+        'data/sale_order_sequence.xml',
+        "views/superstore_actions.xml",
+        "views/superstore_product_view.xml",
+        "views/superstore_sales_view.xml",
+        "views/superstore_partner_view.xml",
+        "views/superstore_menu.xml",
+    ],
+    "application": True,
+    "installable": True,
+    "license": "LGPL-3",
+}

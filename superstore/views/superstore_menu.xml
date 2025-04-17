@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_superstore"
+              name="Super Store"
+              sequence="10"
+    />
+    <menuitem id="menu_superstore_customers"
+              name="Customers"
+              parent="menu_superstore"
+              action="action_superstore_customers"/>
+
+    <!-- قائمة الطلبات -->
+    <menuitem id="menu_superstore_sales"
+              name="Sales Orders"
+              parent="menu_superstore"
+              action="action_superstore_sales"/>
+
+    <!-- قائمة المنتجات -->
+    <menuitem id="menu_superstore_products"
+              name="Products"
+              parent="menu_superstore"
+              action="action_superstore_products"/>
+    <menuitem id="menu_my_custom_root" name="My Custom Module" parent="menu_superstore" />
+
+    <menuitem id="menu_my_custom_model"
+              name="My Models"
+              parent="menu_my_custom_root"
+              action="action_my_model"/>
+
+
+</odoo>
