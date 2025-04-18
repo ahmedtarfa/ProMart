@@ -6,11 +6,6 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-<!--    <record id="model_product_recom" model="ir.model">-->
-<!--        <field name="name">my.recom.model</field>-->
-<!--        <field name="model">my.recom.model</field>-->
-<!--    </record>-->
-
      <record id="view_product_recom_tree" model="ir.ui.view">
         <field name="name">my.recom.model.tree</field>
         <field name="model">my.recom.model</field>

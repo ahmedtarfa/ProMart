@@ -9,6 +9,7 @@
     "stock",],  
     "data": [
         "views/product_recommendtion_view.xml",
+        "views/sentiment_analysis_view.xml",
         "security/ir.model.access.csv",
         "views/sales_forcasting_view.xml",
         'data/sale_order_sequence.xml',

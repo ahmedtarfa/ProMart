@@ -17,7 +17,7 @@ class MyRecomModel(models.Model):
 
             try:
                 # Replace with your actual FastAPI URL
-                response = requests.post("http://192.168.1.24:1112/predict", json=payload)
+                response = requests.post("http://192.168.0.107:1113/predict", json=payload)
                 if response.status_code == 200:
                     result = response.json()
                     recom_lines = [f"{entry['product_id']}" for entry in result]
