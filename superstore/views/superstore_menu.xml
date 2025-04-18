@@ -20,12 +20,18 @@
               name="Products"
               parent="menu_superstore"
               action="action_superstore_products"/>
+
+
     <menuitem id="menu_my_custom_root" name="My Custom Module" parent="menu_superstore" />
 
-    <menuitem id="menu_my_custom_model"
-              name="My Models"
-              parent="menu_my_custom_root"
-              action="action_my_model"/>
+   <menuitem id="menu_my_custom_forecast_model"
+          name="My Forecast Models"
+          parent="menu_my_custom_root"
+          action="action_my_forecast_model"/>
 
+    <menuitem id="menu_product_recom_model"
+          name="My Recommndtion Model"
+          parent="menu_my_custom_root"
+          action="action_product_recom"/>
 
 </odoo>

@@ -1,49 +1,51 @@
 <odoo>
     <!-- ✅ ACTION FIRST -->
-    <record id="action_my_model" model="ir.actions.act_window">
-        <field name="name">My Models</field>
-        <field name="res_model">my.model</field>
+    <record id="action_my_forecast_model" model="ir.actions.act_window">
+        <field name="name">My Forecast Models</field>
+        <field name="res_model">my.forecast.model</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <!-- ✅ THEN MENU that uses the action -->
+    <record id="model_my_forecast_model" model="ir.model">
+        <field name="name">my.forecast.model</field>
+        <field name="model">my.forecast.model</field>
+    </record>
 
-    <!-- Tree View -->
-    <record id="view_my_model_tree" model="ir.ui.view">
-        <field name="name">my.model.tree</field>
-        <field name="model">my.model</field>
+    <!-- ✅ Tree View for Forecast Models -->
+    <record id="view_my_forecast_model_tree" model="ir.ui.view">
+        <field name="name">my.forecast.model.tree</field>
+        <field name="model">my.forecast.model</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="name"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="forecast_result"/>
             </tree>
         </field>
     </record>
 
-    <!-- Form View with Forecast Fields & Button -->
-    <record id="view_my_model_form" model="ir.ui.view">
-        <field name="name">my.model.form</field>
-        <field name="model">my.model</field>
+    <!-- ✅ Form View with Forecast Fields & Button -->
+    <record id="view_my_forecast_model_form" model="ir.ui.view">
+        <field name="name">my.forecast.model.form</field>
+        <field name="model">my.forecast.model</field>
         <field name="arch" type="xml">
             <form>
-            <header>
-                <button name="action_forecast"
-                        string="Forecast"
-                        type="object"
-                        class="btn-primary"/>
-            </header>
-            <sheet>
-                <group>
-                    <field name="name"/>
-                    <field name="description"/>
-                    <field name="start_date"/>
-                    <field name="end_date"/>
-                </group>
-                <group>
-                    <field name="forecast_result" readonly="1"/>
-                </group>
-            </sheet>
-        </form>
+                <header>
+                    <button name="action_forecast"
+                            string="Forecast"
+                            type="object"
+                            class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+                    <group>
+                        <field name="forecast_result" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
         </field>
     </record>
-
 </odoo>

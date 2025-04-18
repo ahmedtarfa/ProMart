@@ -8,6 +8,7 @@
     "sale_management",
     "stock",],  
     "data": [
+        "views/product_recommendtion_view.xml",
         "security/ir.model.access.csv",
         "views/sales_forcasting_view.xml",
         'data/sale_order_sequence.xml',
