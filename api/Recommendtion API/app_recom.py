@@ -35,4 +35,4 @@ def recommendtion(user_id: ModelInput):
     ]
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='192.168.1.21', port=1112)
+    uvicorn.run(app, host='192.168.1.24', port=1112)
