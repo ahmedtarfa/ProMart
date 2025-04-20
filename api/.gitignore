@@ -1,5 +1,0 @@
-# Ignore all .h5 files
-*.h5
-
-# Or specifically ignore this path
-api/Sentiment_analysis API/finetuned_sentiment2/tf_model.h5
