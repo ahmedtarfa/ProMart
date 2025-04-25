@@ -1,49 +1,76 @@
-# app.py
-
+from sentence_transformers import SentenceTransformer
+from chromadb import PersistentClient
+import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel
-from gensim.models import Word2Vec
-import pandas as pd
-import pickle
 import uvicorn
 
-# Load trained model and data
-model = Word2Vec.load("word2vec.model")
-
-with open("product_data.pkl", "rb") as f:
-    df = pickle.load(f)
-
-app = FastAPI()
+app=FastAPI()
+df = pd.read_csv("all products.csv", encoding='ISO-8859-1')
+df = df[["Product ID","Yahoo Image URL"]]
+# Load model once globally and force it to use CUDA if available
+model = SentenceTransformer('all-MiniLM-L6-v2')
+device = "cuda" if model.device.type == "cuda" else "cpu"
 
 class SearchRequest(BaseModel):
     query: str
 
-@app.post("/predict")
-def search_word2vec_products(request: SearchRequest):
-    search_input = request.query.lower().split()
-    search_terms = [word for word in search_input if word in model.wv.key_to_index]
+def search_inventory(user_query: str, top_k: int = 5, chroma_path="./chroma_store",
+                     collection_name="products_collection"):
+    # Connect to ChromaDB
+    client = PersistentClient(path=chroma_path)
+    collection = client.get_or_create_collection(name=collection_name)
 
-    if not search_terms:
-        return {
-            "query": request.query,
-            "message": "None of the search terms exist in the model vocabulary.",
-            "recommendations": []
-        }
+    # Encode query with device
+    query_embedding = model.encode(user_query, device=device)
 
-    similar_words = model.wv.most_similar(positive=search_terms, topn=10)
-    similar_keywords = [word for word, _ in similar_words]
-
-    mask = df['Full Description'].str.lower().apply(
-        lambda x: any(sim_word in x for sim_word in similar_keywords)
+    # Search
+    results = collection.query(
+        query_embeddings=[query_embedding],
+        n_results=top_k
     )
 
-    recommended_products = df[mask][['Product ID', 'Product Name']].drop_duplicates().head(10)
+    # Format and return results
+    formatted_results = []
+    for i in range(len(results['documents'][0])):
+        match = {
+            "Product Name": results['documents'][0][i],
+            "metadata": results['metadatas'][0][i]
+        }
+        formatted_results.append(match)
 
-    return {
-        "query": request.query,
-        "similar_keywords": similar_keywords,
-        "recommendations": recommended_products.to_dict(orient="records")
-    }
+    return formatted_results
+
+@app.post("/predict")
+def search_product(request: SearchRequest):
+    search_input = request.query
+    results = search_inventory(search_input)
+
+    search_results = []
+
+    # Loop through the results and gather the details
+    for i, item in enumerate(results, start=1):
+        product_info = {
+            "Product Name": item['Product Name'],
+            "metadata": item["metadata"],
+            "Yahoo Image URL": None  # Default value in case no image is found
+        }
+
+        metadata = item["metadata"]
+        product_id = metadata.get('Product ID')
+
+        # Now get the Yahoo Image URL for the matching Product ID
+        matching_row = df[df["Product ID"] == product_id]
+
+        if not matching_row.empty:
+            product_info["Yahoo Image URL"] = matching_row.iloc[0]['Yahoo Image URL']
+        else:
+            product_info["Yahoo Image URL"] = "Not found"
+
+        # Add the product info to the results list
+        search_results.append(product_info)
+
+    return {"search_results": search_results}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="192.168.0.107", port=1114)
+    uvicorn.run(app, host="192.168.0.105", port=1114)
