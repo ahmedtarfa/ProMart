@@ -1,6 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-
 access_my_forecast_model,my.forecast.model,model_my_forecast_model,base.group_user,1,1,1,1
-access_my_recom_model,my.recom.model,model_my_recom_model,base.group_user,1,1,1,1
+access_my_recom_model,my.recom.user.model,model_my_recom_user_model,base.group_user,1,1,1,1
 access_my_sentiment_analysis,my.sent.model,model_my_sent_model,base.group_user,1,1,1,1
-
+access_my_search_recom_model,my.recom.search.model,model_my_recom_search_model,base.group_user,1,1,1,1
+access_rating_rating_sentiment,rating.rating.sentiment,model_rating_rating,base.group_user,1,1,0,0

@@ -1,7 +1,7 @@
 <odoo>
 
     <record id="action_sentiment_analysis" model="ir.actions.act_window">
-        <field name="name">Ny Sentiment Analysis</field>
+        <field name="name">My Sentiment Analysis</field>
         <field name="res_model">my.sent.model</field>
         <field name="view_mode">tree,form</field>
     </record>

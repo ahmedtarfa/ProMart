@@ -21,7 +21,7 @@ class MyForecastModel(models.Model):
 
             try:
                 # Replace with your actual FastAPI URL
-                response = requests.post("http://192.168.1.24:1111/predict", json=payload)
+                response = requests.post("http://192.168.1.10:1111/predict", json=payload)
                 if response.status_code == 200:
                     result = response.json()
                     forecast_lines = [f"{entry['ds']}: {entry['yhat']:.2f}" for entry in result]
