@@ -18,7 +18,7 @@ class MySearchRecomModel(models.Model):
         payload = {"query": str(query)}
 
         try:
-            response = requests.post("http://192.168.1.11:1114/predict", json=payload)
+            response = requests.post("http://192.168.1.90:1114/predict", json=payload)
             #response = requests.post("https://e8b8-2c0f-fc88-5-9b9d-e092-51df-6350-c502.ngrok-free.app/predict",json=payload)
             if response.status_code == 200:
                 result = response.json()

@@ -6,7 +6,7 @@
     "depends": ["base", 'rating',
     "contacts",
     "sale_management",
-    "stock",],  
+    "stock",'web'],
     "data": [
         "views/product_recommendtion_view.xml",
         "views/search_recom_view.xml",
@@ -24,11 +24,9 @@
         'data/website_data.xml',
         "views/recommendation_template.xml",
         
-
-        
-        
     ],
     "application": True,
     "installable": True,
+    'auto_install': False,
     "license": "LGPL-3",
 }

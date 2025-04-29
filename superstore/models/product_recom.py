@@ -32,7 +32,7 @@ class MyRecomModel(models.Model):
         payload = {"customer_id": customer_reference}
 
         try:
-            response = requests.post("http://192.168.1.11:1115/recommend_by_user", json=payload)
+            response = requests.post("http://192.168.1.90:1115/recommend_by_user", json=payload)
             if response.status_code == 200:
                 result = response.json()
                 return result.get("recommendations", [])
@@ -44,7 +44,7 @@ class MyRecomModel(models.Model):
     def get_high_rate_recommendations(self):
         """Function to get high rate products if customer is not logged in"""
         try:
-            response = requests.get("http://192.168.1.11:1115/high_rate_recommendations")
+            response = requests.get("http://192.168.1.90:1115/high_rate_recommendations")
             if response.status_code == 200:
                 result = response.json()
 
