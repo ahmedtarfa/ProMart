@@ -4,7 +4,7 @@ from chromadb import PersistentClient
 import torch  # Import PyTorch
 import time
 
-def load_and_embed_inventory(csv_path="inventory.csv", collection_name="products_collection"):
+def load_and_embed_inventory(csv_path="data/inventory.csv", collection_name="products_collection"):
     # Load inventory data
     df = pd.read_csv(csv_path)
 
@@ -39,8 +39,8 @@ def load_and_embed_inventory(csv_path="inventory.csv", collection_name="products
 
     # Add data
     collection.add(
-        documents=df['Product Name Cleaned'].tolist(),
-        metadatas=df[['Product ID', 'Product Description' ,'Price']].to_dict(orient='records'),
+        documents=df['Product Description'].tolist(),
+        metadatas=df[['Product ID', 'Product Name Cleaned' ,'Price', 'Category', 'Sub-Category', 'stock']].to_dict(orient='records'),
         ids=df['Product ID'].astype(str).tolist(),
         embeddings=df['embedding'].tolist()
     )

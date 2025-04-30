@@ -70,7 +70,7 @@ def search_product(request: SearchRequest):
         # Add the product info to the results list
         search_results.append(product_info)
 
-    return {"search_results": search_results}
+    return {"recommendations": search_results}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="192.168.0.105", port=1114)
