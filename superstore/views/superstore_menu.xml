@@ -24,11 +24,6 @@
 
     <menuitem id="menu_my_custom_root" name="My Custom Module" parent="menu_superstore" />
 
-   <menuitem id="menu_my_custom_forecast_model"
-          name="My Forecast Models"
-          parent="menu_my_custom_root"
-          action="action_my_forecast_model"/>
-
     <menuitem id="menu_product_recom_model"
           name="My Recommndtion Model"
           parent="menu_my_custom_root"
@@ -38,5 +33,12 @@
           name="Ny Sentiment Analysis"
           parent="menu_my_custom_root"
           action="action_sentiment_analysis"/>
+
+    <menuitem id="menu_search_recom_model"
+          name="My Recommndtion by Search Model"
+          parent="menu_my_custom_root"
+          action="action_search_recom"/>
+       
+
 
 </odoo>

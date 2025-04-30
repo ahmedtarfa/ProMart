@@ -2,28 +2,28 @@
 
     <record id="action_product_recom" model="ir.actions.act_window">
         <field name="name">My Recommndtion Model</field>
-        <field name="res_model">my.recom.model</field>
+        <field name="res_model">my.recom.user.model</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-     <record id="view_product_recom_tree" model="ir.ui.view">
-        <field name="name">my.recom.model.tree</field>
-        <field name="model">my.recom.model</field>
+    <record id="view_product_recom_tree" model="ir.ui.view">
+        <field name="name">my.recom.user.model.tree</field>
+        <field name="model">my.recom.user.model</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="user_id"/>
-                <field name="recom_result"/>
+                <field name="user_recom_result"/>
             </tree>
         </field>
     </record>
 
     <record id="view_product_recom_form" model="ir.ui.view">
-        <field name="name">my.recom.model.form</field>
-        <field name="model">my.recom.model</field>
+        <field name="name">my.recom.user.model.form</field>
+        <field name="model">my.recom.user.model</field>
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_recom"
+                    <button name="action_user_recom"
                             string="Recommendation"
                             type="object"
                             class="btn-primary"/>
@@ -33,7 +33,7 @@
                         <field name="user_id"/>
                     </group>
                     <group>
-                        <field name="recom_result" readonly="1"/>
+                        <field name="user_recom_result" readonly="1"/>
                     </group>
                 </sheet>
             </form>
