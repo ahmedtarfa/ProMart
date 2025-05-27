@@ -18,7 +18,7 @@ class NySentimentAnalysis(models.Model):
             }
 
             try:
-                response = requests.post("http://192.168.1.90:1113/predict/", json=payload)
+                response = requests.post("http://11.11.11.17:1113/predict/", json=payload)
                 if response.status_code == 200:
                     result = response.json()
                     # Format each review with its corresponding rate

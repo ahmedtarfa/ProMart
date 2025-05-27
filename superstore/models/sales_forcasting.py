@@ -107,7 +107,7 @@ class MyForecastModel(models.Model):
             "end_date": str(self.end_date)
         }
 
-        api_url = "http://192.168.1.4:1111/predict/"
+        api_url = "http://11.11.11.17:1111/predict/"
         result_html = ""
 
         _logger.info(f"Sending forecast request to {api_url} with payload: {payload}")
