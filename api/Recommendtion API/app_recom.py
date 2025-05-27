@@ -4,7 +4,10 @@ import pandas as pd
 import joblib
 import uvicorn
 import pickle
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
+ip = os.getenv("IP")
 app = FastAPI()
 
 # Load customer data from pickle
@@ -171,4 +174,4 @@ def get_high_sales_products():
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="11.11.11.17", port=1115)
+    uvicorn.run(app, host=ip, port=1115)

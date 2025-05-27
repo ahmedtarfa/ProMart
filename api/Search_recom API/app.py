@@ -4,6 +4,10 @@ import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel
 import uvicorn
+import os
+from dotenv import load_dotenv
+load_dotenv()
+ip = os.getenv("IP")
 
 app = FastAPI()
 
@@ -76,4 +80,4 @@ def search_product(request: SearchRequest):
     return {"recommendations": search_results}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="11.11.11.17", port=1114)
+    uvicorn.run(app, host=ip, port=1114)

@@ -14,7 +14,12 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 from nltk.stem.isri import ISRIStemmer
-from langid import classify  # To detect language for handling Arabic and English separately
+from langid import classify
+
+import os
+from dotenv import load_dotenv
+load_dotenv()
+ip = os.getenv("IP")
 
 # Download necessary NLTK data
 nltk.download('stopwords')
@@ -92,4 +97,4 @@ def sentiment_analysis(data: ModelInput):
     ]
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='11.11.11.17', port=1113)
+    uvicorn.run(app, host=ip, port=1113)

@@ -9,6 +9,9 @@ from prophet import Prophet
 from scipy.special import inv_boxcox
 from typing import List
 import os
+from dotenv import load_dotenv
+load_dotenv()
+ip = os.getenv("IP")
 
 app = FastAPI()
 
@@ -57,4 +60,4 @@ def predict_sales(date: ModelInput):
     return result
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='11.11.11.17', port=1111)
+    uvicorn.run(app, host=ip, port=1111)
