@@ -38,9 +38,11 @@ def load_and_embed_inventory(csv_path="inventory.csv", collection_name="products
     collection = client.get_or_create_collection(name=collection_name)
 
     # Add data
+    df['full_description'] = df['Product Name Cleaned'] + ". " + df['Product Description']
+
     collection.add(
-        documents=df['Product Name Cleaned'].tolist(),
-        metadatas=df[['Product ID', 'Product Description' ,'Price']].to_dict(orient='records'),
+        documents=df['full_description'].tolist(),
+        metadatas=df[['Product ID', 'Product Name Cleaned', 'Price','Product Description']].to_dict(orient='records'),
         ids=df['Product ID'].astype(str).tolist(),
         embeddings=df['embedding'].tolist()
     )

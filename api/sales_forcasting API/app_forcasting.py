@@ -57,4 +57,4 @@ def predict_sales(date: ModelInput):
     return result
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='192.168.0.105', port=1111)
+    uvicorn.run(app, host='11.11.11.17', port=1111)
