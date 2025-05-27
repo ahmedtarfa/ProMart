@@ -1,53 +1,63 @@
-import pandas as pd
 from sentence_transformers import SentenceTransformer
 from chromadb import PersistentClient
-import torch  # Import PyTorch
+import torch
 import time
+from get_data_odoo import get_ecommerce_products_from_odoo
 
-def load_and_embed_inventory(csv_path="data/inventory.csv", collection_name="products_collection"):
-    # Load inventory data
-    df = pd.read_csv(csv_path)
+def load_and_embed_inventory(collection_name="products_collection"):
+    # Load inventory data from Odoo
+    products = get_ecommerce_products_from_odoo()
 
-    # Loadx embedding model and move it to the GPU if available
+    if not products:
+        print("No products retrieved.")
+        return
+
+    # Load embedding model
     model_name = 'all-MiniLM-L6-v2'
     model = SentenceTransformer(model_name)
-    if torch.cuda.is_available():
-        device = 'cuda'
-    else:
-        device = 'cpu'
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    if device == 'cpu':
         print("CUDA not available, using CPU.")
     model.to(device)
 
+    # Extract descriptions for embedding
+    descriptions = [p['description_ecommerce'] for p in products]
     start_time = time.time()
-    embeddings = model.encode(df['Product Description'].tolist(), device=device)
+    embeddings = model.encode(descriptions, device=device)
     end_time = time.time()
-    embedding_time = end_time - start_time
-    print(f"Embedding time: {embedding_time:.2f} seconds")
-    df['embedding'] = embeddings.tolist()
+    print(f"Embedding time: {end_time - start_time:.2f} seconds")
 
-    # Set up ChromaDB with persistence
+    # Set up ChromaDB
     client = PersistentClient(path="./chroma_store")
 
-    # Drop existing collection if exists
+    # Drop old collection if exists
     try:
         client.delete_collection(name=collection_name)
     except:
         pass
 
-    # Create fresh collection
+    # Create new collection
     collection = client.get_or_create_collection(name=collection_name)
 
-    # Add data
+    # Add embedded products
     collection.add(
-        documents=df['Product Description'].tolist(),
-        metadatas=df[['Product ID', 'Product Name Cleaned' ,'Price', 'Category', 'Sub-Category', 'stock']].to_dict(orient='records'),
-        ids=df['Product ID'].astype(str).tolist(),
-        embeddings=df['embedding'].tolist()
+        documents=descriptions,
+        embeddings=embeddings.tolist(),
+        ids=[str(p['id']) if p['id'] else p['name'] for p in products],
+        metadatas=[
+            {
+                'name': p['name'],
+                'id':p['id'],
+                'price': p['price'],
+                'category': p['ecommerce_categories'],
+                'stock': p['stock_quantity']
+            }
+            for p in products
+        ]
     )
 
 
 if __name__ == "__main__":
     total_start_time = time.time()
     load_and_embed_inventory()
-    total_end_time = time.time()
-    total_time = total_end_time - total_start_time
+    print(f"Total time: {time.time() - total_start_time:.2f} seconds")

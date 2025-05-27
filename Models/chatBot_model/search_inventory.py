@@ -31,6 +31,6 @@ def search_inventory(user_query: str, top_k: int = 5 , chroma_path="./chroma_sto
 
     return formatted_results
 
-# if __name__ == '__main__':
-#     result = search_inventory("i want a smart phone")
-#     print(result)
+if __name__ == '__main__':
+    result = search_inventory("i want a smart phone")
+    print(result)
