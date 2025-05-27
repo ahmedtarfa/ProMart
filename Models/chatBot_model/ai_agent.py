@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from load_data import load_and_embed_inventory
 from search_inventory import search_inventory
-from get_product import bot_response_with_odoo_url  # Renamed for clarity
+from get_product_url import bot_response_with_odoo_url  # Renamed for clarity
 import google.generativeai as genai
 import os
 from dotenv import load_dotenv
