@@ -1,145 +1,174 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import pandas as pd
-import pickle
+import joblib
 import uvicorn
-
-# Load trained recommendation data and ratings files
-try:
-    with open("customer_recommendation_data.pkl", "rb") as f:
-        customer_data = pickle.load(f)
-    print("Customer recommendation data loaded successfully.")
-except Exception as e:
-    print(f"Error loading customer recommendation data: {e}")
-    customer_data = None
-
-# Load rating data
-try:
-    with open("original_ratings.pkl", "rb") as f:
-        original_ratings = pickle.load(f)
-    print("Original ratings data loaded successfully.")
-except Exception as e:
-    print(f"Error loading original ratings data: {e}")
-    original_ratings = None
-
-try:
-    with open("predicted_ratings.pkl", "rb") as f:
-        predicted_ratings = pickle.load(f)
-    print("Predicted ratings data loaded successfully.")
-except Exception as e:
-    print(f"Error loading predicted ratings data: {e}")
-    predicted_ratings = None
+import pickle
 
 app = FastAPI()
 
+# Load customer data from pickle
+try:
+    with open('customer_recommendation_data.pkl', 'rb') as f:
+        customer_data = pickle.load(f)
+    print("Customer data loaded successfully.")
+    print("First 5 rows:")
+    print(customer_data.head())
+except Exception as e:
+    print(f"Error loading customer data: {e}")
+    customer_data = None
+
+# Load product data
+try:
+    product_data = pd.read_csv("all products.csv")
+    print("Product data loaded successfully.")
+except Exception as e:
+    print(f"Error loading product data: {e}")
+    product_data = None
+
+# Load original interactions
+try:
+    original_interactions = joblib.load("original_ratings.pkl")
+    print("Original interactions loaded successfully.")
+except Exception as e:
+    print(f"Error loading original interactions: {e}")
+    original_interactions = None
+
+# Load predicted ratings
+try:
+    predicted_ratings = joblib.load("predicted_ratings.pkl")
+    print("Predicted ratings loaded successfully.")
+except Exception as e:
+    print(f"Error loading predicted ratings: {e}")
+    predicted_ratings = None
+
+
+# Request Model
 class UserRequest(BaseModel):
-    customer_id: str = None  # Optional field for customer ID
+    customer_id: str = None
+
+
+# Recommendation logic
+def recommend_products(predicted_ratings, original_interactions, user_id, num_recommendations=20):
+    try:
+        if user_id not in predicted_ratings.index:
+            print(f"User ID '{user_id}' not found in predictions.")
+            return pd.Series(dtype='float64')
+
+        user_predictions = predicted_ratings.loc[user_id].sort_values(ascending=False)
+
+        known_interactions = (
+            original_interactions.loc[user_id].dropna().index
+            if original_interactions is not None and user_id in original_interactions.index
+            else pd.Index([])
+        )
+
+        recommended_items = user_predictions.drop(known_interactions, errors='ignore')
+        print("Recommended product IDs:", recommended_items.head(num_recommendations).index.tolist())
+        return recommended_items.head(num_recommendations)
+    except Exception as e:
+        print(f"Error in recommend_products: {e}")
+        return pd.Series(dtype='float64')
+
 
 def format_recommendations(df):
-    """Format the DataFrame to return it as a list of dicts with proper keys."""
     if df is None or df.empty:
         return []
 
-    df = df.rename(columns={
-        'Product ID': 'id',
-        'Product Name': 'product_name',
-        'Product Description': 'product_description',
-        'price': 'price',
-        'Rate': 'rate',
-        'Category': 'category',
-        'Yahoo Image URL': 'image_url'
+    df = df.replace([float('inf'), float('-inf')], pd.NA).fillna({
+        'Price': 0.0,
+        'Product Name_y': '',
+        'Product Description': '',
+        'Category': '',
+        'Yahoo Image URL': ''
     })
 
-    return df.to_dict(orient="records")
+    return [{
+        'id': row.get('Product ID'),
+        'product_name': row.get('Product Name_y'),
+        'product_description': row.get('Product Description'),
+        'price': float(row.get('Price')) if pd.notnull(row.get('Price')) else 0.0,
+        'category': row.get('Category'),
+        'image_url': row.get('Yahoo Image URL')
+    } for _, row in df.iterrows()]
+
 
 @app.post("/recommend_by_user")
 def recommend_products_by_user(request: UserRequest):
-    if customer_data is None:
-        return {
-            "status": "error",
-            "message": "Customer recommendation data not loaded.",
-            "recommendations": []
-        }
+    user_id = request.customer_id
+    print(f"Received user ID: {user_id}")
 
-    customer_id = request.customer_id
+    if predicted_ratings is None or customer_data is None or product_data is None:
+        return {"status": "error", "message": "Data not loaded correctly.", "recommendations": []}
 
-    if customer_id and customer_id in original_ratings['Customer ID'].values:
-        # Use original and predicted ratings for logged-in user
-        user_original_ratings = original_ratings[original_ratings['Customer ID'] == customer_id]
-        user_predicted_ratings = predicted_ratings[predicted_ratings['Customer ID'] == customer_id]
+    if user_id in predicted_ratings.index:
+        recommended_series = recommend_products(predicted_ratings, original_interactions, user_id)
 
-        # Merge original and predicted ratings
-        user_ratings = pd.merge(user_original_ratings, user_predicted_ratings, on='Product ID', suffixes=('_original', '_predicted'))
-
-        # Filter products with rate >= 3
-        user_ratings = user_ratings[user_ratings['Rate_predicted'] >= 3]
-        user_ratings = user_ratings.sort_values(by='Rate_predicted', ascending=False)
-
-        # Take the top 5 recommendations based on predicted ratings
-        recommended_products = user_ratings.head(5)
-
-        print("Recommendations for customer:", recommended_products.to_dict(orient="records"))
-
-        return {
-            "status": "success",
-            "customer_id": customer_id,
-            "message": "Recommendations fetched successfully.",
-            "recommendations": format_recommendations(recommended_products)
-        }
-    else:
-        # If no customer_id or not logged in, show top-rated products for each category
-        if customer_data is None:
+        if recommended_series.empty:
             return {
-                "status": "error",
-                "message": "Customer recommendation data not loaded.",
+                "status": "success",
+                "user_id": user_id,
+                "message": "No new recommendations available.",
                 "recommendations": []
             }
 
-        # Get all unique products with rate >= 3
-        high_rate_products = customer_data[customer_data['Rate'] >= 3][['Product ID', 'Product Name', 'Product Description', 'price', 'Rate', 'Category', 'Yahoo Image URL']].drop_duplicates()
+        recommended_df = product_data[
+            product_data['Product ID'].isin(recommended_series.index)
+        ][[
+            'Product ID', 'Product Name', 'Product Description', 'Price', 'Category', 'Yahoo Image URL'
+        ]].drop_duplicates(subset=['Product ID'])
 
-        # Exclude products with any missing attribute
-        high_rate_products = high_rate_products.dropna(subset=['Product Name', 'Product Description', 'Yahoo Image URL', 'Rate', 'Category', 'price'])
+        # Fix column naming for consistency
+        recommended_df = recommended_df.rename(columns={'Product Name': 'Product Name_y'})
 
-        # Sort by rate descending and take the top 5 per category
-        high_rate_products = high_rate_products.sort_values(by='Rate', ascending=False)
-
-        # Group by category and take the top 5 products for each category
-        top_products_per_category = high_rate_products.groupby('Category').head(5)
-
-        print("High rate recommendations:", top_products_per_category.to_dict(orient="records"))
+        formatted = format_recommendations(recommended_df)
 
         return {
             "status": "success",
-            "message": "Top rated recommendations fetched successfully.",
-            "recommendations": format_recommendations(top_products_per_category)
+            "user_id": user_id,
+            "message": "Recommendations fetched successfully.",
+            "recommendations": formatted
         }
 
-@app.get("/high_rate_recommendations")
-def get_high_rate_recommendations():
-    if customer_data is None:
-        return {
-            "status": "error",
-            "message": "Customer recommendation data not loaded.",
-            "recommendations": []
-        }
+    # If user_id not found, fallback to top-selling products
+    top_selling_ids = customer_data.groupby('Product ID')['Order ID'].count().sort_values(ascending=False).head(50).index
+    top_df = customer_data[customer_data['Product ID'].isin(top_selling_ids)][[
+        'Product ID', 'Product Name_y', 'Product Description', 'Price', 'Rate', 'Category', 'Yahoo Image URL'
+    ]].drop_duplicates(subset=['Product ID'])
 
-    # Get all unique products with rate >= 3
-    high_rate_products = customer_data[customer_data['Rate'] >= 3][['Product ID', 'Product Name', 'Product Description', 'price', 'Rate', 'Category', 'Yahoo Image URL']].drop_duplicates()
-
-    # Exclude products with any missing attribute
-    high_rate_products = high_rate_products.dropna(subset=['Product Name', 'Product Description', 'Yahoo Image URL', 'Rate', 'Category', 'price'])
-
-    # Sort by rate descending and take the top 5
-    top_rated_products = high_rate_products.sort_values(by='Rate', ascending=False).head(20)
-
-    print("High rate recommendations:", top_rated_products.to_dict(orient="records"))
+    grouped = {
+        category: format_recommendations(group)
+        for category, group in top_df.groupby('Category')
+    }
 
     return {
         "status": "success",
-        "message": "Top rated recommendations fetched successfully.",
-        "recommendations": format_recommendations(top_rated_products)
+        "message": "Top selling products returned by category.",
+        "recommendations": grouped
     }
 
+
+@app.get("/high_sales_product_recommendation")
+def get_high_sales_products():
+    if customer_data is None:
+        return {"status": "error", "message": "Customer data not loaded.", "recommendations": []}
+
+    top_selling_ids = customer_data.groupby('Product ID')['Order ID'].count().sort_values(ascending=False).head(50).index
+    top_df = customer_data[customer_data['Product ID'].isin(top_selling_ids)][[
+        'Product ID', 'Product Name_y', 'Product Description', 'Price', 'Rate', 'Category', 'Yahoo Image URL'
+    ]].drop_duplicates(subset=['Product ID'])
+
+    grouped = {
+        category: format_recommendations(group)
+        for category, group in top_df.groupby('Category')
+    }
+
+    return {
+        "status": "success",
+        "message": "Top selling products returned by category.",
+        "recommendations": grouped
+    }
+
+
 if __name__ == "__main__":
-    uvicorn.run(app, host="192.168.1.90", port=1115)  # Note: different port if needed
+    uvicorn.run(app, host="11.11.11.17", port=1115)

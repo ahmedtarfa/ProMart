@@ -92,4 +92,4 @@ def sentiment_analysis(data: ModelInput):
     ]
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='192.168.1.90', port=1113)
+    uvicorn.run(app, host='11.11.11.17', port=1113)
