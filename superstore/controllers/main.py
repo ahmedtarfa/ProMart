@@ -2,6 +2,10 @@ from odoo import http
 from odoo.http import request
 import requests
 import json
+import os
+from dotenv import load_dotenv
+load_dotenv()
+ip = os.getenv("IP")
 
 class SuperstoreRecommendation(http.Controller):
 
@@ -69,7 +73,7 @@ class SuperstoreRecommendation(http.Controller):
             else:
                 # ✅ إحضار التوصيات بناء على العميل أو المنتجات الرائجة
                 if customer_reference:
-                    recommend_url = "http://11.11.11.17:1115/recommend_by_user"
+                    recommend_url = f"http://{ip}:1115/recommend_by_user"
                     headers = {'Content-Type': 'application/json'}
                     payload = json.dumps({"customer_id": customer_reference})
 
@@ -83,7 +87,7 @@ class SuperstoreRecommendation(http.Controller):
                     else:
                         grouped_products = self._process_grouped_recommendations(recommendations_data)
                 else:
-                    recommend_url = "http://11.11.11.17:1115/high_sales_product_recommendation"
+                    recommend_url = f"http://{ip}:1115/high_sales_product_recommendation"
                     response = requests.get(recommend_url)
                     response.raise_for_status()
                     response_json = response.json()

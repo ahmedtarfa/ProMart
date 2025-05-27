@@ -1,16 +1,13 @@
-# -*- coding: utf-8 -*-
-
-# Standard library imports
 from datetime import date
 import requests  # For making HTTP requests to the forecast API
 import logging  # For logging potential issues
-
-# Odoo imports
 from odoo import models, fields, api, _  # _ is for translations
 from odoo.exceptions import ValidationError, UserError
-
-# Third-party imports
 from markupsafe import Markup  # Used to safely render HTML in Odoo fields
+import os
+from dotenv import load_dotenv
+load_dotenv()
+ip = os.getenv("IP")
 
 # Initialize logger for this module
 _logger = logging.getLogger(__name__)
@@ -107,7 +104,7 @@ class MyForecastModel(models.Model):
             "end_date": str(self.end_date)
         }
 
-        api_url = "http://11.11.11.17:1111/predict/"
+        api_url = f"http://{ip}:1111/predict/"
         result_html = ""
 
         _logger.info(f"Sending forecast request to {api_url} with payload: {payload}")

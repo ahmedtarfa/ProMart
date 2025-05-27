@@ -1,5 +1,9 @@
 from odoo import models, fields
 import requests
+import os
+from dotenv import load_dotenv
+load_dotenv()
+ip = os.getenv("IP")
 
 class MySearchRecomModel(models.Model):
     _name = 'my.recom.search.model'
@@ -18,7 +22,7 @@ class MySearchRecomModel(models.Model):
         payload = {"query": str(query)}
 
         try:
-            response = requests.post("http://11.11.11.17:1114/predict", json=payload)
+            response = requests.post(f"http://{ip}:1114/predict", json=payload)
             #response = requests.post("https://e8b8-2c0f-fc88-5-9b9d-e092-51df-6350-c502.ngrok-free.app/predict",json=payload)
             if response.status_code == 200:
                 result = response.json()

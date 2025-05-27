@@ -2,6 +2,10 @@ from odoo import models, fields, api
 import requests
 import json
 import logging
+import os
+from dotenv import load_dotenv
+load_dotenv()
+ip = os.getenv("IP")
 
 _logger = logging.getLogger(__name__)
 
@@ -33,7 +37,7 @@ class MyRecomModel(models.Model):
         payload = {"customer_id": customer_reference}
 
         try:
-            response = requests.post("http://11.11.11.17:1115/recommend_by_user", json=payload)
+            response = requests.post(f"http://{ip}:1115/recommend_by_user", json=payload)
             response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
             result = response.json()
             return result.get("recommendations", [])

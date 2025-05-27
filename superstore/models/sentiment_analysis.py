@@ -1,5 +1,9 @@
 from odoo import models, fields, api
 import requests
+import os
+from dotenv import load_dotenv
+load_dotenv()
+ip = os.getenv("IP")
 
 class NySentimentAnalysis(models.Model):
     _name = 'my.sent.model'
@@ -14,11 +18,11 @@ class NySentimentAnalysis(models.Model):
             reviews_list = [line.strip() for line in str(record.review).split('\n') if line.strip()]
 
             payload = {
-                "reviews": reviews_list  # ✅ send multiple reviews
+                "reviews": reviews_list
             }
 
             try:
-                response = requests.post("http://11.11.11.17:1113/predict/", json=payload)
+                response = requests.post(f"http://{ip}:1113/predict/", json=payload)
                 if response.status_code == 200:
                     result = response.json()
                     # Format each review with its corresponding rate
