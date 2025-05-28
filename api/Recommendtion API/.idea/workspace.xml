@@ -5,15 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a72d0f89-8134-480a-a0e1-5e4f5f528f67" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Search_recom API/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../sales_forcasting API/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app_recom.py" beforeDir="false" afterPath="$PROJECT_DIR$/app_recom.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Search_recom API/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Search_recom API/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Search_recom API/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Search_recom API/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../sales_forcasting API/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../sales_forcasting API/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../sales_forcasting API/app_forcasting.py" beforeDir="false" afterPath="$PROJECT_DIR$/../sales_forcasting API/app_forcasting.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sentiment_analysis API/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Sentiment_analysis API/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
