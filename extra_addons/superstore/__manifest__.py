@@ -1,0 +1,32 @@
+{
+    "name": "superstore",
+    "author": "Teams2",
+    "category": "Website",
+    "version": "17.0.0.1.0",
+    "depends": ["base", 'rating',
+    "contacts",
+    "sale_management",
+    "stock",'web'],
+    "data": [
+        "views/product_recommendtion_view.xml",
+        "views/search_recom_view.xml",
+        "views/sentiment_analysis_view.xml",
+        "security/ir.model.access.csv",
+        "views/rating_rating_sentiment.xml",
+        "views/sales_forcasting_view.xml",
+        'data/sale_order_sequence.xml',
+        "views/superstore_actions.xml",
+        "views/superstore_product_view.xml",
+        "views/superstore_sales_view.xml",
+        "views/superstore_partner_view.xml",
+        "views/superstore_menu.xml",
+
+        'data/website_data.xml',
+        "views/recommendation_template.xml",
+        
+    ],
+    "application": True,
+    "installable": True,
+    'auto_install': False,
+    "license": "LGPL-3",
+}

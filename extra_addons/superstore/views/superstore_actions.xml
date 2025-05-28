@@ -1,0 +1,22 @@
+<odoo>
+    <!-- Action لعرض العملاء -->
+    <record id="action_superstore_customers" model="ir.actions.act_window">
+        <field name="name">Customers</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Action لعرض الطلبات -->
+    <record id="action_superstore_sales" model="ir.actions.act_window">
+        <field name="name">Sales Orders</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Action لعرض المنتجات -->
+    <record id="action_superstore_products" model="ir.actions.act_window">
+        <field name="name">Products</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
