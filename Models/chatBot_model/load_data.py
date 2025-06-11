@@ -1,6 +1,5 @@
 from sentence_transformers import SentenceTransformer
 from chromadb import PersistentClient
-import torch
 import time
 from get_data_odoo import get_ecommerce_products_from_odoo
 
@@ -15,10 +14,8 @@ def load_and_embed_inventory(collection_name="products_collection"):
     # Load embedding model
     model_name = 'all-MiniLM-L6-v2'
     model = SentenceTransformer(model_name)
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    if device == 'cpu':
-        print("CUDA not available, using CPU.")
-    model.to(device)
+    device = 'cpu'  # Force CPU usage
+    print("Running on CPU.")
 
     # Extract descriptions for embedding
     descriptions = [p['description_ecommerce'] for p in products]
@@ -47,7 +44,7 @@ def load_and_embed_inventory(collection_name="products_collection"):
         metadatas=[
             {
                 'name': p['name'],
-                'id':p['id'],
+                'id': p['id'],
                 'price': p['price'],
                 'category': p['ecommerce_categories'],
                 'stock': p['stock_quantity']
@@ -55,7 +52,6 @@ def load_and_embed_inventory(collection_name="products_collection"):
             for p in products
         ]
     )
-
 
 if __name__ == "__main__":
     total_start_time = time.time()
