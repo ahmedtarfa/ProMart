@@ -5,19 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c08a71ea-16db-4175-8cd9-d3a1cbfbb355" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../../Models/chatBot_model/.idea/chatBot_model.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Models/chatBot_model/.idea/chatBot_model.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Models/chatBot_model/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Models/chatBot_model/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Models/chatBot_model/ai_agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Models/chatBot_model/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Models/chatBot_model/load_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../Models/chatBot_model/load_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Models/chatBot_model/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../Models/chatBot_model/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Recommendtion API/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Recommendtion API/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Search_recom API/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Search_recom API/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Search_recom API/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Search_recom API/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Search_recom API/chroma_store/65b6171b-a282-4cab-a454-2f258b438510/length.bin" beforeDir="false" afterPath="$PROJECT_DIR$/../Search_recom API/chroma_store/65b6171b-a282-4cab-a454-2f258b438510/length.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Search_recom API/chroma_store/chroma.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/../Search_recom API/chroma_store/chroma.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Search_recom API/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Search_recom API/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Sentiment_analysis API/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Sentiment_analysis API/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Models/chatBot_model/.env" beforeDir="false" afterPath="$PROJECT_DIR$/../../Models/chatBot_model/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
