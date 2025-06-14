@@ -4,9 +4,10 @@ from dotenv import load_dotenv
 import xmlrpc.client
 from typing import List, Dict
 
-def extract_ids(text: str) -> List[str]:
-    # Extract all product IDs enclosed in << >>
-    return re.findall(r"<<(\d+)>>", text)
+def extract_ids(text: str) -> list[str]:
+    ids = re.findall(r"<<(\d+)>>", text)
+    ids += re.findall(r"link\s*-->\s*(\d+)", text)
+    return list(set(ids))
 
 def search_odoo_products(product_ids_to_search: List[int]) -> Dict[int, Dict[str, str]]:
     load_dotenv()

@@ -2,6 +2,8 @@ import xmlrpc.client
 import os
 from dotenv import load_dotenv
 
+load_dotenv()
+
 def get_ecommerce_products_from_odoo():
     # Odoo configuration
     url = os.getenv("ODOO_URL")
@@ -9,6 +11,7 @@ def get_ecommerce_products_from_odoo():
     username = os.getenv("ODOO_USER")
     password = os.getenv("ODOO_PASSWORD")
 
+    print(url)
     # Login to Odoo
     common = xmlrpc.client.ServerProxy(f"{url}/xmlrpc/2/common")
     uid = common.authenticate(db, username, password, {})
