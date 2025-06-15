@@ -23,7 +23,10 @@ def load_and_embed_inventory(collection_name="products_collection"):
         return
 
     model = SentenceTransformer('all-MiniLM-L6-v2')
-    descriptions = [p['description_ecommerce'] for p in products]
+    descriptions = [
+        f"description:{p['description_ecommerce']} price:{p['price']} name:{p['name']}"
+        for p in products
+    ]
     embeddings = model.encode(descriptions, device='cpu')
 
     client = PersistentClient(path=new_path)

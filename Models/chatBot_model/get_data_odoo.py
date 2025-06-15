@@ -6,7 +6,7 @@ load_dotenv()
 
 def get_ecommerce_products_from_odoo():
     # Odoo configuration
-    url = os.getenv("ODOO_URL")
+    url = os.getenv("ODOO_URL_LOCAL")
     db = os.getenv("ODOO_DB")
     username = os.getenv("ODOO_USER")
     password = os.getenv("ODOO_PASSWORD")
