@@ -38,7 +38,7 @@ class SuperstoreRecommendation(http.Controller):
 
             if search_query:
                 # 🔍 بحث بالكلمة المفتاحية
-                search_url = "http://192.168.1.4:1114/predict"
+                search_url = f"http://{ip}:1114/predict"
                 headers = {'Content-Type': 'application/json'}
                 payload = json.dumps({"query": search_query})
 
