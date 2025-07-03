@@ -6,7 +6,7 @@
 
 ## 🎥 Demo Video
 
-<img src="https://drive.google.com/file/d/1gWN3mQMSeGbqO6Rnr9G_4Eu7c7YjcS81/view?usp=sharing" width="700"/>
+<img src="https://s3.ezgif.com/tmp/ezgif-32d36a64134c20.gif" width="700"/>
 
 👉 [Click here to watch the full video on YouTube](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
 
