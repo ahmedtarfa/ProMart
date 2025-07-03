@@ -4,14 +4,6 @@
 
 ---
 
-## 🎥 Demo Video
-
-<img src="https://s3.ezgif.com/tmp/ezgif-32d36a64134c20.gif" width="700"/>
-
-👉 [Click here to Show our project](https://drive.google.com/file/d/1lp5cvyLxJRdhzXiU5pMvPevoypUYezS6/view?usp=sharing)
-
----
-
 ## 🚀 Key Features
 
 ### 🤖 1. Assel – AI Sales Chatbot
